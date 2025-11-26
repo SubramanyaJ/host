@@ -1,0 +1,62 @@
+# /Cargo.toml
+# https://doc.rust-lang.org/cargo/reference/cargo-targets.html
+
+####################
+[package]
+
+name = "pineapple"
+version = "1.0.0"
+edition = "2021"
+authors = ["Subramanya J <subramanyajaradhya@gmail.com>"]
+description = "Implementation of a quantum safe communication system with NAT traversal"
+readme = "README.md"
+repository = "https://github.com/SubramanyaJ/pineapple"
+publish = false
+
+####################
+[dependencies]
+
+anyhow = "1"
+blake3 = "1"
+aes-gcm = "0.10"
+ed25519-dalek = { version = "2", features = ["rand_core"] }
+hex = "0.4"
+ml-kem = "0.2"
+rand = "0.8"
+sha3 = "0.10"
+x25519-dalek = { version = "2", features = ["reusable_secrets", "static_secrets"] }
+crossterm = "0.28"
+
+# NAT traversal dependencies
+tokio = { version = "1", features = ["full"] }
+tokio-tungstenite = { version = "0.21", features = ["rustls-tls-native-roots"] }
+rustls = "0.21"
+webpki-roots = "0.25"
+futures-util = "0.3"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+socket2 = { version = "0.5", features = ["all"] }
+
+# FFI dependencies
+libc = "0.2"
+
+[dev-dependencies]
+tokio-test = "0.4"
+
+####################
+[lib]
+name = "pineapple"
+path = "src/lib.rs"
+crate-type = ["lib", "staticlib", "cdylib"]
+
+####################
+[[bin]]
+name = "pineapple"
+path = "src/main.rs"
+
+####################
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true
